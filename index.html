@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MY ZONE · 个人信号站</title>
+  <meta name="description" content="一个绝区零风格的个人主页" />
+  <link rel="stylesheet" href="css/style.css?v=4" />
+</head>
+<body>
+
+  <!-- ============ 开屏 H.D.D ============ -->
+  <div class="intro" id="intro">
+    <canvas id="introCanvas"></canvas>
+    <div class="intro-grid"></div>
+    <div class="intro-scan"></div>
+    <div class="intro-vignette"></div>
+    <div class="intro-box">
+      <div class="intro-eyebrow"><i></i>SIGNAL LINKING · 信号接入中</div>
+      <h1 class="hdd" data-text="H.D.D">H.D.D</h1>
+      <div class="intro-sub">ZENLESS&nbsp;ZONE&nbsp;ZERO&nbsp;·&nbsp;PERSONAL&nbsp;TERMINAL</div>
+      <div class="intro-bar"><span id="introBar"></span></div>
+      <div class="intro-meta">
+        <span class="intro-status" id="introStatus">正在接入绳网…</span>
+        <span class="intro-pct"><b id="introPct">0</b>%</span>
+      </div>
+    </div>
+    <button class="intro-skip" id="introSkip" type="button">跳过&nbsp;SKIP&nbsp;›</button>
+  </div>
+
+  <!-- ============ 主站 ============ -->
+  <div class="app" id="app">
+    <div class="bg">
+      <div class="bg-gradient"></div>
+      <div class="bg-blob bg-blob--a"></div>
+      <div class="bg-blob bg-blob--b"></div>
+      <div class="bg-dots"></div>
+      <div class="bg-noise"></div>
+    </div>
+
+    <header class="nav">
+      <a class="brand" data-go="home" href="#home">
+        <span class="brand-mark">Z</span>
+        <span class="brand-text"><b>MY ZONE</b><i>个人信号站</i></span>
+      </a>
+      <nav class="nav-pills" id="navPills">
+        <a class="pill is-active" data-go="home" href="#home">首页</a>
+        <a class="pill" data-go="profile" href="#profile">个人介绍</a>
+        <a class="pill" data-go="hobby" href="#hobby">兴趣爱好</a>
+        <a class="pill" data-go="experience" href="#experience">个人阅历</a>
+        <a class="pill" data-go="personality" href="#personality">性格特点</a>
+      </nav>
+      <button class="nav-replay" id="replayIntro" type="button" title="重播开屏动画">↻ 开屏</button>
+    </header>
+
+    <!-- 右侧编号轨道 -->
+    <aside class="track" id="track">
+      <a class="track-item is-active" data-go="home" href="#home"><i>K</i><b>01</b></a>
+      <a class="track-item" data-go="profile" href="#profile"><i>›</i><b>02</b></a>
+      <a class="track-item" data-go="hobby" href="#hobby"><i>›</i><b>03</b></a>
+      <a class="track-item" data-go="experience" href="#experience"><i>›</i><b>04</b></a>
+      <a class="track-item" data-go="personality" href="#personality"><i>›</i><b>05</b></a>
+    </aside>
+
+    <main class="stage" id="stage">
+
+      <!-- ===== 首页 ===== -->
+      <section class="page page--home is-active" data-page="home" data-num="01">
+        <span class="ghost-num rise" style="--d:.15s">01</span>
+        <div class="home-grid">
+          <div class="home-copy">
+            <div class="kicker rise" style="--d:.25s"><i></i>NEW ERIDU · PERSONAL TERMINAL</div>
+            <h2 class="display">
+              <span class="display-line rise" style="--d:.35s">你好，我是</span>
+              <span class="display-line display-line--accent rise" style="--d:.5s">「你的名字」</span>
+            </h2>
+            <p class="lead rise" style="--d:.65s">欢迎接入我的个人信号站 ——<br />这里存放我的经历、爱好，和一些安静又吵闹的棱角。</p>
+            <div class="cta-row rise" style="--d:.78s">
+              <a class="btn btn--acid" data-go="profile" href="#profile"><span>开始探索</span><b>›</b></a>
+              <a class="btn btn--ghost" data-go="hobby" href="#hobby">随便看看</a>
+            </div>
+            <ul class="status-list rise" style="--d:.9s">
+              <li><b>STATUS</b><span>ONLINE</span></li>
+              <li><b>SIGNAL</b><span>良好</span></li>
+              <li><b>VER</b><span>v1.0</span></li>
+            </ul>
+          </div>
+          <div class="home-visual rise" style="--d:.55s" aria-hidden="true">
+            <div class="visual-card">
+              <div class="visual-halftone"></div>
+              <div class="visual-ring visual-ring--outer"></div>
+              <div class="visual-ring visual-ring--inner"></div>
+              <span class="visual-z">Z</span>
+              <span class="stick stick--star"><b>EST.</b>2026</span>
+              <span class="stick stick--tag">NEW ERIDU</span>
+              <span class="stick stick--heart">♥</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 个人介绍 ===== -->
+      <section class="page" data-page="profile" data-num="02">
+        <header class="page-head rise" style="--d:.1s">
+          <span class="head-en">PROFILE</span>
+          <h2 class="head-cn">个人介绍</h2>
+          <span class="ghost-num">02</span>
+        </header>
+        <div class="profile-grid">
+          <div class="id-card rise" style="--d:.2s">
+            <div class="id-avatar"><span>ME</span><i></i></div>
+            <h3 class="id-name">你的名字<small>NAME UNKNOWN</small></h3>
+            <dl class="id-list">
+              <div><dt>坐标</dt><dd>某座城市 · CHINA</dd></div>
+              <div><dt>身份</dt><dd>学生 / 业余折腾家</dd></div>
+              <div><dt>状态</dt><dd class="id-live"><i></i>信号良好，正在营业</dd></div>
+            </dl>
+          </div>
+          <div class="bio-card rise" style="--d:.32s">
+            <h3 class="block-title">关于我<small>ABOUT ME</small></h3>
+            <p>我是一个对新鲜事物毫无抵抗力的人，喜欢把普通日常折腾得稍微有意思一点。</p>
+            <p>大多数时候安静、慢热；一旦聊到喜欢的东西，就会突然变成一个话痨。</p>
+            <p>这个网站是我的一块自留地，用来存放我的爱好、经历，和一些奇奇怪怪的想法。</p>
+            <ul class="spec-list">
+              <li><b>在忙的事</b><span>学习、做东西、玩</span></li>
+              <li><b>擅长的事</b><span>专注、观察、突然上头</span></li>
+              <li><b>正在学</b><span>前端 &amp; 一切感兴趣的事</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 兴趣爱好 ===== -->
+      <section class="page" data-page="hobby" data-num="03">
+        <header class="page-head rise" style="--d:.1s">
+          <span class="head-en">INTERESTS</span>
+          <h2 class="head-cn">兴趣爱好</h2>
+          <span class="ghost-num">03</span>
+        </header>
+        <div class="hobby-grid">
+          <article class="hobby-card rise" style="--d:.2s">
+            <span class="hobby-no">01</span>
+            <span class="hobby-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/><rect x="2" y="7" width="20" height="11" rx="4"/></svg>
+            </span>
+            <h3>游戏<small>GAME</small></h3>
+            <p>动作与肉鸽爱好者，享受一场酣畅淋漓的连招。</p>
+          </article>
+          <article class="hobby-card hobby-card--acid rise" style="--d:.3s">
+            <span class="hobby-no">02</span>
+            <span class="hobby-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 13a9 9 0 0 1 9-9v9z"/><path d="M4 13a9 9 0 0 0 9 9 9 9 0 0 0 9-9h-9z"/></svg>
+            </span>
+            <h3>音乐<small>MUSIC</small></h3>
+            <p>City Pop、电子与游戏原声，耳机常常长在头上。</p>
+          </article>
+          <article class="hobby-card rise" style="--d:.4s">
+            <span class="hobby-no">03</span>
+            <span class="hobby-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h3l2-3h8l2 3h3v11H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            </span>
+            <h3>摄影<small>PHOTO</small></h3>
+            <p>喜欢记录街角的光影、有意思的招牌和傍晚天空。</p>
+          </article>
+          <article class="hobby-card rise" style="--d:.5s">
+            <span class="hobby-no">04</span>
+            <span class="hobby-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 17l9-13 3 4 8-5-6 11-4-2z"/><circle cx="6.5" cy="18.5" r="2.5"/></svg>
+            </span>
+            <h3>街头<small>STREET</small></h3>
+            <p>滑板、涂鸦、球鞋与潮流玩具，喜欢那种松垮的劲儿。</p>
+          </article>
+          <article class="hobby-card hobby-card--acid rise" style="--d:.6s">
+            <span class="hobby-no">05</span>
+            <span class="hobby-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>
+            </span>
+            <h3>影视<small>FILM</small></h3>
+            <p>番剧、电影、二创，遇到神作会忍不住反复拉片。</p>
+          </article>
+          <article class="hobby-card rise" style="--d:.7s">
+            <span class="hobby-no">06</span>
+            <span class="hobby-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg>
+            </span>
+            <h3>折腾<small>TECH</small></h3>
+            <p>折腾网页、插件和一切可以自定义的东西，比如这个站。</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== 个人阅历 ===== -->
+      <section class="page" data-page="experience" data-num="04">
+        <header class="page-head rise" style="--d:.1s">
+          <span class="head-en">EXPERIENCE</span>
+          <h2 class="head-cn">个人阅历</h2>
+          <span class="ghost-num">04</span>
+        </header>
+        <ol class="timeline">
+          <li class="tl-item rise" style="--d:.2s">
+            <span class="tl-dot"></span>
+            <div class="tl-card">
+              <time>2026 · NOW</time>
+              <h3>搭建个人信号站</h3>
+              <p>第一次把开屏动画做成网页，也是第一块完全属于自己的网络角落。</p>
+            </div>
+          </li>
+          <li class="tl-item rise" style="--d:.32s">
+            <span class="tl-dot"></span>
+            <div class="tl-card">
+              <time>2024</time>
+              <h3>一段重要的旅程</h3>
+              <p>在这里写下你做过的事、遇到的人和去过的地方。</p>
+            </div>
+          </li>
+          <li class="tl-item rise" style="--d:.44s">
+            <span class="tl-dot"></span>
+            <div class="tl-card">
+              <time>2022</time>
+              <h3>新爱好入坑</h3>
+              <p>替换成你的故事：一门爱好、一项技能，或者一次上头的开始。</p>
+            </div>
+          </li>
+          <li class="tl-item rise" style="--d:.56s">
+            <span class="tl-dot"></span>
+            <div class="tl-card">
+              <time>EARLIER</time>
+              <h3>故事开始的地方</h3>
+              <p>所有热爱的起点，从某个平平无奇又闪闪发光的日子算起。</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ===== 性格特点 ===== -->
+      <section class="page" data-page="personality" data-num="05">
+        <header class="page-head rise" style="--d:.1s">
+          <span class="head-en">PERSONALITY</span>
+          <h2 class="head-cn">性格特点</h2>
+          <span class="ghost-num">05</span>
+        </header>
+        <div class="person-grid">
+          <div class="person-card rise" style="--d:.2s">
+            <h3 class="block-title">关键词<small>KEYWORDS</small></h3>
+            <div class="chips">
+              <span>慢热型选手</span><span class="chip--acid">细节控</span><span>好奇心过载</span>
+              <span>熟了之后很疯</span><span class="chip--acid">DDL 战神</span>
+              <span>表面淡定内心戏多</span><span>选择困难</span><span class="chip--acid">一上头就停不下来</span>
+            </div>
+            <p class="person-sum">一句话总结：<b>安静地发疯。</b></p>
+          </div>
+          <div class="person-card person-card--meters rise" style="--d:.34s">
+            <h3 class="block-title">属性面板<small>STATUS BOARD</small></h3>
+            <div class="meter" data-val="62"><b>社交电量</b><div class="meter-track"><i></i></div><em>62</em></div>
+            <div class="meter" data-val="95"><b>脑洞指数</b><div class="meter-track"><i></i></div><em>95</em></div>
+            <div class="meter" data-val="78"><b>专注续航</b><div class="meter-track"><i></i></div><em>78</em></div>
+            <div class="meter" data-val="70"><b>行动速度</b><div class="meter-track"><i></i></div><em>70</em></div>
+            <div class="meter" data-val="88"><b>乐观程度</b><div class="meter-track"><i></i></div><em>88</em></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 底部跑马灯 -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>MY ZONE&nbsp;✦&nbsp;个人信号站&nbsp;✦&nbsp;ZENLESS VIBE&nbsp;✦&nbsp;街头&nbsp;·&nbsp;潮流&nbsp;·&nbsp;怪东西&nbsp;✦&nbsp;SIGNAL GOOD&nbsp;✦&nbsp;</span>
+        <span>MY ZONE&nbsp;✦&nbsp;个人信号站&nbsp;✦&nbsp;ZENLESS VIBE&nbsp;✦&nbsp;街头&nbsp;·&nbsp;潮流&nbsp;·&nbsp;怪东西&nbsp;✦&nbsp;SIGNAL GOOD&nbsp;✦&nbsp;</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js?v=4"></script>
+</body>
+</html>
