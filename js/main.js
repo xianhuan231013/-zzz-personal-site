@@ -24,14 +24,11 @@
   const goodsPause = document.getElementById("goodsPause");
   const memeCards = Array.from(document.querySelectorAll(".meme-card"));
   const memeNote = document.getElementById("memeNote");
-  const abstractBtn = document.getElementById("abstractToggle");
-  const abstractNote = document.getElementById("abstractNote");
 
   const audios = {
     meme1: document.getElementById("audio-meme1"),
     meme2: document.getElementById("audio-meme2"),
-    meme3: document.getElementById("audio-meme3"),
-    abstract: document.getElementById("audio-abstract-bgm")
+    meme3: document.getElementById("audio-meme3")
   };
 
   const INTRO_MS = 6200;
@@ -234,8 +231,6 @@
       audio.currentTime = 0;
     });
     memeCards.forEach(card => card.classList.remove("is-playing"));
-    abstractBtn.classList.remove("is-playing");
-    abstractBtn.querySelector("span").textContent = "背景音乐：OFF";
   }
 
   /* ---------- 页面与子页路由 ---------- */
@@ -385,38 +380,6 @@
       if (card) card.classList.remove("is-playing");
       memeNote.textContent = `缺少音频文件：assets/audio/${memeFileNames[key]}`;
     });
-  });
-
-  /* ---------- 抽象背景音乐 ---------- */
-  const defaultAbstractNote = abstractNote.textContent;
-  audios.abstract.loop = true;
-
-  abstractBtn.addEventListener("click", () => {
-    if (audios.abstract.paused) {
-      audios.abstract.play()
-        .then(() => { abstractNote.textContent = defaultAbstractNote; })
-        .catch(() => {
-          abstractBtn.classList.remove("is-playing");
-          abstractBtn.querySelector("span").textContent = "背景音乐：OFF";
-          abstractNote.textContent = "背景音乐还没有就位：请把 abstract-bgm.mp3 放入 assets/audio。";
-        });
-    } else {
-      audios.abstract.pause();
-    }
-  });
-
-  audios.abstract.addEventListener("play", () => {
-    abstractBtn.classList.add("is-playing");
-    abstractBtn.querySelector("span").textContent = "背景音乐：ON";
-  });
-  audios.abstract.addEventListener("pause", () => {
-    abstractBtn.classList.remove("is-playing");
-    abstractBtn.querySelector("span").textContent = "背景音乐：OFF";
-  });
-  audios.abstract.addEventListener("error", () => {
-    abstractBtn.classList.remove("is-playing");
-    abstractBtn.querySelector("span").textContent = "背景音乐：OFF";
-    abstractNote.textContent = "缺少音频文件：assets/audio/abstract-bgm.mp3";
   });
 
   /* ---------- 初始化 ---------- */
