@@ -13,6 +13,26 @@
   const pages = Array.from(document.querySelectorAll(".page"));
   const goEls = Array.from(document.querySelectorAll("[data-go]"));
   const meters = Array.from(document.querySelectorAll(".meter"));
+  const subpages = Array.from(document.querySelectorAll(".subpage"));
+  const subOpeners = Array.from(document.querySelectorAll("[data-sub]"));
+  const backBtns = Array.from(document.querySelectorAll("[data-back]"));
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImg");
+  const lightboxCaption = document.getElementById("lightboxCaption");
+  const lightboxClose = document.getElementById("lightboxClose");
+  const goodsRail = document.getElementById("goodsRail");
+  const goodsPause = document.getElementById("goodsPause");
+  const memeCards = Array.from(document.querySelectorAll(".meme-card"));
+  const memeNote = document.getElementById("memeNote");
+  const abstractBtn = document.getElementById("abstractToggle");
+  const abstractNote = document.getElementById("abstractNote");
+
+  const audios = {
+    meme1: document.getElementById("audio-meme1"),
+    meme2: document.getElementById("audio-meme2"),
+    meme3: document.getElementById("audio-meme3"),
+    abstract: document.getElementById("audio-abstract-bgm")
+  };
 
   const INTRO_MS = 6200;
   const STORE_KEY = "my-zone-intro-seen";
@@ -53,31 +73,31 @@
       const a = -Math.PI / 2 + i * Math.PI * 2 / 3 + t * .22;
       pts.push([cx + Math.cos(a) * base, cy + Math.sin(a) * base]);
     }
-    const pts2 = pts.map(([x, y]) => [cx + (x - cx) * .58, cy + (y - cy) * .58]);
+    const inner = pts.map(([x, y]) => [cx + (x - cx) * .58, cy + (y - cy) * .58]);
 
     ctx.save();
     ctx.strokeStyle = "rgba(105,230,255,.38)";
     ctx.lineWidth = 1.4;
     ctx.beginPath();
-    pts.concat(pts2).forEach(([x, y], i) => {
+    pts.concat(inner).forEach(([x, y], i) => {
       if (i === 0 || i === pts.length) ctx.moveTo(x, y);
       ctx.lineTo(x, y);
     });
     for (let i = 0; i < 3; i++) {
       ctx.moveTo(pts[i][0], pts[i][1]);
-      ctx.lineTo(pts2[i][0], pts2[i][1]);
+      ctx.lineTo(inner[i][0], inner[i][1]);
     }
     ctx.stroke();
 
     ctx.strokeStyle = "rgba(207,255,46,.22)";
     ctx.lineWidth = 2;
     ctx.beginPath();
-    const r = base * 1.42;
+    const ringBase = base * 1.42;
     for (let i = 0; i < 24; i++) {
       const a = i / 24 * Math.PI * 2;
-      const rr = r * (i % 2 ? .86 : 1);
-      const x = cx + Math.cos(a) * rr;
-      const y = cy + Math.sin(a) * rr;
+      const ring = ringBase * (i % 2 ? .86 : 1);
+      const x = cx + Math.cos(a) * ring;
+      const y = cy + Math.sin(a) * ring;
       i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
     }
     ctx.closePath();
@@ -89,20 +109,20 @@
     const t = now / 1000;
     ctx.clearRect(0, 0, W, H);
 
-    for (const n of nodes) {
-      n.x += n.vx;
-      n.y += n.vy;
-      if (n.x < 0 || n.x > W) n.vx *= -1;
-      if (n.y < 0 || n.y > H) n.vy *= -1;
+    for (const node of nodes) {
+      node.x += node.vx;
+      node.y += node.vy;
+      if (node.x < 0 || node.x > W) node.vx *= -1;
+      if (node.y < 0 || node.y > H) node.vy *= -1;
     }
 
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
         const a = nodes[i], b = nodes[j];
         const dx = a.x - b.x, dy = a.y - b.y;
-        const d = Math.hypot(dx, dy);
-        if (d < 135) {
-          ctx.strokeStyle = `rgba(105,230,255,${(1 - d / 135) * .24})`;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 135) {
+          ctx.strokeStyle = `rgba(105,230,255,${(1 - distance / 135) * .24})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
@@ -113,9 +133,9 @@
     }
 
     ctx.fillStyle = "rgba(180,238,255,.72)";
-    for (const n of nodes) {
+    for (const node of nodes) {
       ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.arc(node.x, node.y, node.r, 0, Math.PI * 2);
       ctx.fill();
     }
 
@@ -141,14 +161,14 @@
     const p = Math.max(0, Math.min(100, Math.round(value)));
     bar.style.width = p + "%";
     pctEl.textContent = p;
-    let msg = messages[0];
+    let message = messages[0];
     for (let i = messages.length - 1; i >= 0; i--) {
       if (p >= messages[i][0]) {
-        msg = messages[i];
+        message = messages[i];
         break;
       }
     }
-    if (msg) statusEl.textContent = msg[1];
+    if (message) statusEl.textContent = message[1];
   }
 
   function finishIntro() {
@@ -206,35 +226,217 @@
     requestAnimationFrame(tick);
   }
 
-  /* ---------- 页面路由 ---------- */
-  function go(name) {
-    const target = pages.find(page => page.dataset.page === name);
-    if (!target || target.classList.contains("is-active")) return;
-
-    pages.forEach(page => page.classList.toggle("is-active", page === target));
-    target.scrollTop = 0;
-
-    goEls.forEach(el => {
-      el.classList.toggle("is-active", el.dataset.go === name);
+  /* ---------- 音频 ---------- */
+  function stopAllAudio() {
+    Object.values(audios).forEach(audio => {
+      if (!audio) return;
+      audio.pause();
+      audio.currentTime = 0;
     });
-
+    memeCards.forEach(card => card.classList.remove("is-playing"));
+    abstractBtn.classList.remove("is-playing");
+    abstractBtn.querySelector("span").textContent = "背景音乐：OFF";
   }
 
-  meters.forEach(meter => {
-    meter.style.setProperty("--val", `${meter.dataset.val}%`);
+  /* ---------- 页面与子页路由 ---------- */
+  function closeSubstage() {
+    subpages.forEach(page => page.classList.remove("is-open"));
+    stopAllAudio();
+  }
+
+  function openSubstage(name) {
+    const target = subpages.find(page => page.dataset.subpage === name);
+    if (!target) return;
+    stopAllAudio();
+    subpages.forEach(page => page.classList.remove("is-open"));
+    target.scrollTop = 0;
+    requestAnimationFrame(() => target.classList.add("is-open"));
+  }
+
+  function go(name) {
+    const targetName = pages.some(page => page.dataset.page === name) ? name : "home";
+    const target = pages.find(page => page.dataset.page === targetName);
+
+    closeSubstage();
+    pages.forEach(page => page.classList.toggle("is-active", page === target));
+    target.scrollTop = 0;
+    goEls.forEach(el => el.classList.toggle("is-active", el.dataset.go === targetName));
+  }
+
+  goEls.forEach(el => {
+    el.addEventListener("click", event => {
+      event.preventDefault();
+      const name = el.dataset.go;
+      if (location.hash === "#" + name) {
+        go(name);
+      } else {
+        location.hash = name;
+      }
+    });
   });
 
-  skipBtn.onclick = finishIntro;
-  replayBtn.onclick = () => runIntro({ force: true });
-  window.onhashchange = () => {
-    const name = location.hash.replace("#", "") || "home";
-    go(name);
-  };
-  window.onresize = () => {
-    if (introRunning) resizeCanvas();
+  subOpeners.forEach(card => {
+    card.addEventListener("click", () => openSubstage(card.dataset.sub));
+    card.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openSubstage(card.dataset.sub);
+      }
+    });
+  });
+
+  backBtns.forEach(button => {
+    button.addEventListener("click", () => {
+      closeSubstage();
+      if (location.hash === "#hobby") {
+        go("hobby");
+      } else {
+        location.hash = "hobby";
+      }
+    });
+  });
+
+  /* ---------- 谷子横滑与放大 ---------- */
+  function openLightbox(src, alt, caption) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || "";
+    lightboxCaption.textContent = caption || "";
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    window.setTimeout(() => {
+      if (!lightbox.classList.contains("is-open")) lightboxImg.src = "";
+    }, 300);
+  }
+
+  goodsRail.addEventListener("click", event => {
+    const card = event.target.closest(".goods-card");
+    if (!card) return;
+    openLightbox(card.dataset.full, card.querySelector("img").alt, card.dataset.caption);
+  });
+
+  goodsRail.addEventListener("keydown", event => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const card = event.target.closest(".goods-card");
+    if (!card) return;
+    event.preventDefault();
+    openLightbox(card.dataset.full, card.querySelector("img").alt, card.dataset.caption);
+  });
+
+  goodsPause.addEventListener("click", () => {
+    const paused = goodsRail.classList.toggle("is-paused");
+    goodsPause.querySelector("i").textContent = paused ? "▶" : "Ⅱ";
+    goodsPause.querySelector("span").textContent = paused ? "继续滑动" : "暂停滑动";
+  });
+
+  lightboxClose.addEventListener("click", closeLightbox);
+  lightbox.addEventListener("click", event => {
+    if (event.target === lightbox) closeLightbox();
+  });
+
+  /* ---------- 玩梗语音 ---------- */
+  const defaultMemeNote = memeNote.textContent;
+  const memeFileNames = {
+    meme1: "meme1.m4a",
+    meme2: "meme2.wav",
+    meme3: "meme3.m4a"
   };
 
-  const initial = location.hash.replace("#", "") || "home";
-  go(pages.some(p => p.dataset.page === initial) ? initial : "home");
+  memeCards.forEach(card => {
+    card.addEventListener("click", () => playMeme(card));
+    card.addEventListener("keydown", event => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      playMeme(card);
+    });
+  });
+
+  function playMeme(card) {
+    const audio = audios[card.dataset.audio];
+    if (!audio) return;
+
+    Object.entries(audios).forEach(([key, candidate]) => {
+      if (key !== card.dataset.audio) {
+        candidate.pause();
+        candidate.currentTime = 0;
+      }
+    });
+    memeCards.forEach(candidate => candidate.classList.toggle("is-playing", candidate === card));
+    audio.currentTime = 0;
+    audio.play()
+      .then(() => { memeNote.textContent = defaultMemeNote; })
+      .catch(() => {
+        card.classList.remove("is-playing");
+        memeNote.textContent = `语音还没有就位：请把 ${memeFileNames[card.dataset.audio]} 放入 assets/audio。`;
+      });
+  }
+
+  ["meme1", "meme2", "meme3"].forEach(key => {
+    audios[key].addEventListener("ended", () => {
+      const card = memeCards.find(item => item.dataset.audio === key);
+      if (card) card.classList.remove("is-playing");
+    });
+    audios[key].addEventListener("error", () => {
+      const card = memeCards.find(item => item.dataset.audio === key);
+      if (card) card.classList.remove("is-playing");
+      memeNote.textContent = `缺少音频文件：assets/audio/${memeFileNames[key]}`;
+    });
+  });
+
+  /* ---------- 抽象背景音乐 ---------- */
+  const defaultAbstractNote = abstractNote.textContent;
+  audios.abstract.loop = true;
+
+  abstractBtn.addEventListener("click", () => {
+    if (audios.abstract.paused) {
+      audios.abstract.play()
+        .then(() => { abstractNote.textContent = defaultAbstractNote; })
+        .catch(() => {
+          abstractBtn.classList.remove("is-playing");
+          abstractBtn.querySelector("span").textContent = "背景音乐：OFF";
+          abstractNote.textContent = "背景音乐还没有就位：请把 abstract-bgm.mp3 放入 assets/audio。";
+        });
+    } else {
+      audios.abstract.pause();
+    }
+  });
+
+  audios.abstract.addEventListener("play", () => {
+    abstractBtn.classList.add("is-playing");
+    abstractBtn.querySelector("span").textContent = "背景音乐：ON";
+  });
+  audios.abstract.addEventListener("pause", () => {
+    abstractBtn.classList.remove("is-playing");
+    abstractBtn.querySelector("span").textContent = "背景音乐：OFF";
+  });
+  audios.abstract.addEventListener("error", () => {
+    abstractBtn.classList.remove("is-playing");
+    abstractBtn.querySelector("span").textContent = "背景音乐：OFF";
+    abstractNote.textContent = "缺少音频文件：assets/audio/abstract-bgm.mp3";
+  });
+
+  /* ---------- 初始化 ---------- */
+  meters.forEach(meter => meter.style.setProperty("--val", `${meter.dataset.val}%`));
+  skipBtn.addEventListener("click", finishIntro);
+  replayBtn.addEventListener("click", () => {
+    closeSubstage();
+    runIntro({ force: true });
+  });
+
+  window.addEventListener("hashchange", () => {
+    go(location.hash.replace("#", "") || "home");
+  });
+  window.addEventListener("keydown", event => {
+    if (event.key === "Escape") closeLightbox();
+  });
+  window.addEventListener("resize", () => {
+    if (introRunning) resizeCanvas();
+  });
+
+  go(location.hash.replace("#", "") || "home");
   runIntro();
 })();
